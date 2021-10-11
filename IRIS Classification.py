@@ -12,3 +12,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 X_train = X_train[:, [0, 2, 3]]
 X_test = X_test[:, [0, 2, 3]]
 # Sepal length , petal length, petal width 추출
+
+# 로지스틱회귀에 의한 훈련
+log_reg = LogisticRegression(random_state=0).fit(X_train, y_train)
