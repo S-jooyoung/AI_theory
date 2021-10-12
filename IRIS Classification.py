@@ -1,4 +1,6 @@
 # 데이터셋 준비
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -15,3 +17,43 @@ X_test = X_test[:, [0, 2, 3]]
 
 # 로지스틱회귀에 의한 훈련
 log_reg = LogisticRegression(random_state=0).fit(X_train, y_train)
+
+# 데이터 시각화 (Train Data)
+
+y_train_pred = log_reg.predict(X_train)
+correct_train_index = y_train_pred == y_train
+false_train_index = y_train_pred != y_train
+
+y_test_pred = log_reg.predict(X_test)
+correct_test_index = y_test_pred == y_test
+false_test_index = y_test_pred != y_test
+
+plt.rcParams["figure.figsize"] = (12, 4)
+
+fig = plt.figure()
+
+ax = fig.add_subplot(1, 2, 1, projection='3d')
+ax.scatter(X_train[y_train == 0, 0], X_train[y_train == 0, 1],
+           X_train[y_train == 0, 2], c="r", label='setosa')
+ax.scatter(X_train[y_train == 1, 0], X_train[y_train == 1, 1],
+           X_train[y_train == 1, 2], c="g", label='versicolor')
+ax.scatter(X_train[y_train == 2, 0], X_train[y_train == 2, 1],
+           X_train[y_train == 2, 2], c="b", label='virginica')
+
+plt.legend(), plt.grid(), plt.title("Iris data training set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+ax = fig.add_subplot(1, 2, 2, projection='3d')
+ax.scatter(X_train[correct_train_index, 0], X_train[correct_train_index, 1],
+           X_train[correct_train_index, 2], c="r", marker="o", label="Correct")
+ax.scatter(X_train[false_train_index, 0], X_train[false_train_index, 1],
+           X_train[false_train_index, 2], c="b", marker="x", label="False")
+
+plt.legend(), plt.grid(), plt.title("Iris data training set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+plt.show()
