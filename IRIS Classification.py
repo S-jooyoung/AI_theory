@@ -57,3 +57,33 @@ ax.set_xlabel("Sepal length"), ax.set_ylabel(
 
 
 plt.show()
+
+
+# 데이터 시각화 (Test Data)
+
+plt.rcParams["figure.figsize"] = (12, 4)
+
+fig = plt.figure()
+
+ax = fig.add_subplot(1, 2, 1, projection='3d')
+ax.scatter(X_test[y_test == 0, 0], X_test[y_test == 0, 1],
+           X_test[y_test == 0, 2], c="r", label='setosa')
+ax.scatter(X_test[y_test == 1, 0], X_test[y_test == 1, 1],
+           X_test[y_test == 1, 2], c="g", label='versicolor')
+ax.scatter(X_test[y_test == 2, 0], X_test[y_test == 2, 1],
+           X_test[y_test == 2, 2], c="b", label='virginica')
+
+plt.legend(), plt.grid(), plt.title("Iris data testing set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+ax = fig.add_subplot(1, 2, 2, projection='3d')
+ax.scatter(X_test[correct_test_index, 0], X_test[correct_test_index, 1],
+           X_test[correct_test_index, 2], c="r", marker="o", label="Correct")
+ax.scatter(X_test[false_test_index, 0], X_test[false_test_index, 1],
+           X_test[false_test_index, 2], c="b", marker="x", label="False")
+
+plt.legend(), plt.grid(), plt.title("Iris data testing set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
