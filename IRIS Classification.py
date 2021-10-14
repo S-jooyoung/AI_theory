@@ -87,3 +87,8 @@ ax.scatter(X_test[false_test_index, 0], X_test[false_test_index, 1],
 plt.legend(), plt.grid(), plt.title("Iris data testing set")
 ax.set_xlabel("Sepal length"), ax.set_ylabel(
     "Petla length"), ax.set_zlabel("Petla width")
+
+# 성능평가
+
+print("Testing set performance:", log_reg.score(X_train, y_train))
+print("Test set performance:", log_reg.score(X_test, y_test))
