@@ -36,13 +36,8 @@ while True:
 print("Final result : x = [%0.4f , %0.4f], cost = %0.4f \
     at iteration = %d\n" % (x[0], x[1], f(x), iter_count))
 
-print(x_vals)
 
-test, test2 = zip(*x_vals)
-
-print(test)
-print(test2)
-
+# 여러 개의 데이터를 다른 형태로 변환(map), 동인한 개수로 이루어진 자료형을 묶음(zip)
 x1, x2 = map(list, zip(*x_vals))
 ax = plt.axes(projection="3d")
 ax.plot3D(x1, x2, cost_vals, "ro-")
