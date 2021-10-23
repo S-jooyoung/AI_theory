@@ -26,7 +26,7 @@ This repository is about the use of artificial intelligence theory and related l
 
 ## problem
 
-$ f(x1,x2) = (x1 -3)^2 + (x2 - 5)^2 + 10$
+<img src="./img/Problem.png" >
 
 ```python
 # cost function & gradient
@@ -50,7 +50,7 @@ prev_cost = f(x)
 
 ## gradient descent 수식
 
-$ x*{i+1} = x*{i} - a\frac{dx}{dy}f(x\_{i})$
+<img src="./img/SGD수식.png" >
 
 ```python
 x = x - lr * grad(x)
