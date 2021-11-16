@@ -102,6 +102,120 @@ Final result : x = [3.0254 , 5.0544], cost = 10.0036     at iteration = 11
 <img src="./img/SGD.png" width="500" height="500">
 <img src="./img/SGD2.png" width="500" height="500">
 
+
+---
+
+# IRIS Classification
+
+
+## Logistic Regression 란?
+
+- 회귀를 사용하여 데이터가 어떤 범주에 속할 확율을 0에서 1사이의 값으로 예측 
+- 그 확률에 따라 더 높은 범주에 속하는것을 분류해주는 지도 학습 알고리즘.
+
+---
+## 구현내용
+- IRIS Dataset의 3가지의 특징벡터를 사용하여 붓꽃의 종류를 예측한다.
+- 실제 붓꽃의 종류와 예측된 종류를 시각적으로 비교할 수 있게 한다.
+
+---
+## 초기설정
+```python
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, random_state=0, train_size=0.7)
+
+X_train = X_train[:, [0, 2, 3]]
+X_test = X_test[:, [0, 2, 3]]
+# Sepal length , petal length, petal width 추출
+```
+
+---
+## 로지스틱회귀에 의한 훈련
+```python
+log_reg = LogisticRegression(random_state=0).fit(X_train, y_train)
+```
+---
+## 데이터 시각화 (Train Data)
+
+```python
+fig = plt.figure()
+
+ax = fig.add_subplot(1, 2, 1, projection='3d')
+ax.scatter(X_train[y_train == 0, 0], X_train[y_train == 0, 1],
+           X_train[y_train == 0, 2], c="r", label='setosa')
+ax.scatter(X_train[y_train == 1, 0], X_train[y_train == 1, 1],
+           X_train[y_train == 1, 2], c="g", label='versicolor')
+ax.scatter(X_train[y_train == 2, 0], X_train[y_train == 2, 1],
+           X_train[y_train == 2, 2], c="b", label='virginica')
+
+plt.legend(), plt.grid(), plt.title("Iris data training set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+ax = fig.add_subplot(1, 2, 2, projection='3d')
+ax.scatter(X_train[correct_train_index, 0], X_train[correct_train_index, 1],
+           X_train[correct_train_index, 2], c="r", marker="o", label="Correct")
+ax.scatter(X_train[false_train_index, 0], X_train[false_train_index, 1],
+           X_train[false_train_index, 2], c="b", marker="x", label="False")
+
+plt.legend(), plt.grid(), plt.title("Iris data training set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+plt.show()
+
+```
+<img src="./img/IRIS_traindata.png" width="1000" height="500">
+
+---
+## 데이터 시각화 (Test Data)
+```python
+plt.rcParams["figure.figsize"] = (12, 4)
+
+fig = plt.figure()
+
+ax = fig.add_subplot(1, 2, 1, projection='3d')
+ax.scatter(X_test[y_test == 0, 0], X_test[y_test == 0, 1],
+           X_test[y_test == 0, 2], c="r", label='setosa')
+ax.scatter(X_test[y_test == 1, 0], X_test[y_test == 1, 1],
+           X_test[y_test == 1, 2], c="g", label='versicolor')
+ax.scatter(X_test[y_test == 2, 0], X_test[y_test == 2, 1],
+           X_test[y_test == 2, 2], c="b", label='virginica')
+
+plt.legend(), plt.grid(), plt.title("Iris data testing set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+
+
+ax = fig.add_subplot(1, 2, 2, projection='3d')
+ax.scatter(X_test[correct_test_index, 0], X_test[correct_test_index, 1],
+           X_test[correct_test_index, 2], c="r", marker="o", label="Correct")
+ax.scatter(X_test[false_test_index, 0], X_test[false_test_index, 1],
+           X_test[false_test_index, 2], c="b", marker="x", label="False")
+
+plt.legend(), plt.grid(), plt.title("Iris data testing set")
+ax.set_xlabel("Sepal length"), ax.set_ylabel(
+    "Petla length"), ax.set_zlabel("Petla width")
+```
+<img src="./img/IRIS_testdata.png" width="1000" height="500">
+
+---
+## 성능 평가
+```python
+print("Testing set performance:", log_reg.score(X_train, y_train))
+print("Test set performance:", log_reg.score(X_test, y_test))
+
+[output]
+Testing set performance: 0.9809523809523809
+Test set performance: 0.9777777777777777
+
+```
+
+
+
 ---
 
 ## Contributing
