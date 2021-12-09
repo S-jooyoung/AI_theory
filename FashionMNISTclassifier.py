@@ -19,3 +19,13 @@ for c in range(5):
     plt.title(class_names[y_train_full[c]])
     plt.axis("off")
 plt.show()
+
+#학습:검증:테스트 분류
+X_valid, X_train = X_train_full[:5000]/ 255.,  X_train_full[5000:] /255.
+y_valid, y_train = y_train_full[:5000] , y_train_full[5000:] 
+X_test = X_test /255.
+
+print(" 학습:검증:테스트 데이터의 개수  = {}:{}:{}".format(len(X_train)
+                                              ,len(X_valid),len(X_test)))
+
+
