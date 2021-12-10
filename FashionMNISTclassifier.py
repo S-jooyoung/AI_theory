@@ -28,4 +28,29 @@ X_test = X_test /255.
 print(" 학습:검증:테스트 데이터의 개수  = {}:{}:{}".format(len(X_train)
                                               ,len(X_valid),len(X_test)))
 
+#Build a model
 
+# (1) 분류기
+np.random.seed(42)
+tf.random.set_seed(42)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Flatten(input_shape=[28, 28]))
+model.add(tf.keras.layers.Dense(100, activation = "relu"))
+model.add(tf.keras.layers.Dense(50, activation = "relu"))
+model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+
+model.summary()
+"""
+# 강의노트 분류기
+np.random.seed(42)
+tf.random.set_seed(42)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Flatten(input_shape=[28, 28]))
+model.add(tf.keras.layers.Dense(300, activation = "relu"))
+model.add(tf.keras.layers.Dense(100, activation = "relu"))
+model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+
+model.summary()
+"""
