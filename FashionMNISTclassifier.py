@@ -61,3 +61,9 @@ model.compile(loss="sparse_categorical_crossentropy",
               optimizer = "sgd",
               metrics = ["accuracy"])
 # sgd = "Stochastic Gradient Descent" 
+
+#Training model, fit()
+#모델의 weights와 bias값을 경사하강법(GDA)를 이용해서 학습을 통해 결정
+# verbose -> (1 =자세하게), (2 = 간략하게) 
+history = model.fit(X_train, y_train, epochs=30,batch_size = 32, verbose =2,
+                    validation_data = (X_valid, y_valid))
