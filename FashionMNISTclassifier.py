@@ -67,3 +67,16 @@ model.compile(loss="sparse_categorical_crossentropy",
 # verbose -> (1 =자세하게), (2 = 간략하게) 
 history = model.fit(X_train, y_train, epochs=30,batch_size = 32, verbose =2,
                     validation_data = (X_valid, y_valid))
+
+
+# 시각화
+print("history params = ", history.params)
+print("history epoch = ", history.epoch)
+print("history keys = ", history.history.keys())
+
+import pandas as pd
+
+pd.DataFrame(history.history).plot(figsize = (8,5))
+plt.grid()
+plt.gca().set_ylim(0,1)
+plt.show()
