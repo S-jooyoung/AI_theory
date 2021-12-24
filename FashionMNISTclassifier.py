@@ -80,3 +80,28 @@ pd.DataFrame(history.history).plot(figsize = (8,5))
 plt.grid()
 plt.gca().set_ylim(0,1)
 plt.show()
+
+#Model Evaluation
+model.evaluate(X_test,y_test)
+
+
+#Prediction
+X_new = X_test[:20]
+y_proba = model.predict(X_new)
+print(" 1. 예측 확률들 \n", y_proba.round(2))
+
+y_pred = model.predict_classes(X_new)
+print("\n2. 예측 값:", y_pred, end="")
+print(np.array(class_names)[y_pred])
+
+y_new = y_test[:20]
+print("3. 정답 값:", y_new, end="")
+print(np.array(class_names)[y_new])
+plt.figure(figsize =(8,8))
+for index, image in enumerate(X_new):
+    plt.subplot(4,5, index +1)
+    plt.imshow(image, cmap="binary", interpolation="nearest")
+    plt.axis("off")
+    plt.title(class_names[y_new[index]], fontsize = 12)
+
+plt.show()
