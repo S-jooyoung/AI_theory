@@ -102,24 +102,26 @@ Final result : x = [3.0254 , 5.0544], cost = 10.0036     at iteration = 11
 <img src="./img/SGD.png" width="500" height="500">
 <img src="./img/SGD2.png" width="500" height="500">
 
-
 ---
 
 # IRIS Classification
 
-
 ## Logistic Regression 란?
 
-- 회귀를 사용하여 데이터가 어떤 범주에 속할 확률을 0에서 1사이의 값으로 예측 
+- 회귀를 사용하여 데이터가 어떤 범주에 속할 확률을 0에서 1사이의 값으로 예측
 - 그 확률에 따라 더 높은 범주에 속하는것을 분류해주는 지도 학습 알고리즘.
 
 ---
+
 ## 구현내용
+
 - IRIS Dataset의 3가지의 특징벡터를 사용하여 붓꽃의 종류를 예측한다.
 - 실제 붓꽃의 종류와 예측된 종류를 시각적으로 비교할 수 있게 한다.
 
 ---
+
 ## 초기설정
+
 ```python
 X, y = load_iris(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(
@@ -131,11 +133,15 @@ X_test = X_test[:, [0, 2, 3]]
 ```
 
 ---
+
 ## 로지스틱회귀에 의한 훈련
+
 ```python
 log_reg = LogisticRegression(random_state=0).fit(X_train, y_train)
 ```
+
 ---
+
 ## 데이터 시각화 (Train Data)
 
 ```python
@@ -168,10 +174,13 @@ ax.set_xlabel("Sepal length"), ax.set_ylabel(
 plt.show()
 
 ```
+
 <img src="./img/IRIS_traindata.png" width="1000" height="500">
 
 ---
+
 ## 데이터 시각화 (Test Data)
+
 ```python
 plt.rcParams["figure.figsize"] = (12, 4)
 
@@ -200,10 +209,13 @@ plt.legend(), plt.grid(), plt.title("Iris data testing set")
 ax.set_xlabel("Sepal length"), ax.set_ylabel(
     "Petla length"), ax.set_zlabel("Petla width")
 ```
+
 <img src="./img/IRIS_testdata.png" width="1000" height="500">
 
 ---
+
 ## 성능 평가
+
 ```python
 print("Testing set performance:", log_reg.score(X_train, y_train))
 print("Test set performance:", log_reg.score(X_test, y_test))
@@ -214,7 +226,135 @@ Test set performance: 0.9777777777777777
 
 ```
 
+---
 
+# MLP(Multilayer Perceptron)
+
+## MLP(Multilayer Perceptron) 란?
+
+- MLP는 일련의 입력에서 일련의 출력을 생성하는 피드 포워드 인공 신경망이다.
+- MLP는 입력 레이어와 출력 레이어 사이에 방향 그래츠로 연결된 여러 입력 노드 레이어를 특징으로한다. MLP는 네트워크 교육을 위해 역전파를 사용한다. MLP는 딥러닝 방법이다.
+
+---
+
+## 구현내용
+
+- [1] Flatten-Dense(300)-Dense(50)-Softmax(10)
+- [2]Flatten-Dense(300)-Dense(100)-Softmax(10)
+- [1],[2] 분류기의 성능을 비교 분석하기
+
+## 초기 설정
+
+```python
+# 라이브러리 호출
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+
+#데이터 불러오기
+fashion_mnist = tf.keras.datasets.fashion_mnist
+(X_train_full, y_train_full), (X_test, y_test) = fashion_mnist.load_data()
+
+#데이터 이미지 확인
+class_names = ["T-shirt/top" , "Trouser", "Pullover", "Dress", "Coat",
+               "Sandal" , "Shirt", "Sneaker", "Bag", "Ankle boot"]
+
+plt.figure(figsize=(10,5))
+
+for c in range(5):
+    plt.subplot(1,5,c+1)
+    plt.imshow(X_train_full[c], cmap ="gray")
+    plt.title(class_names[y_train_full[c]])
+    plt.axis("off")
+plt.show()
+
+#학습:검증:테스트 분류
+X_valid, X_train = X_train_full[:5000]/ 255.,  X_train_full[5000:] /255.
+y_valid, y_train = y_train_full[:5000] , y_train_full[5000:]
+X_test = X_test /255.
+
+print(" 학습:검증:테스트 데이터의 개수  = {}:{}:{}".format(len(X_train)
+                                              ,len(X_valid),len(X_test)))
+
+```
+
+---
+
+## 모델 구현
+
+```python
+#Build a model
+
+# (2) 분류기
+np.random.seed(42)
+tf.random.set_seed(42)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Flatten(input_shape=[28, 28]))
+model.add(tf.keras.layers.Dense(100, activation = "relu"))
+model.add(tf.keras.layers.Dense(50, activation = "relu"))
+model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+
+model.summary()
+"""
+# (1) 분류기
+np.random.seed(42)
+tf.random.set_seed(42)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Flatten(input_shape=[28, 28]))
+model.add(tf.keras.layers.Dense(300, activation = "relu"))
+model.add(tf.keras.layers.Dense(100, activation = "relu"))
+model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+
+model.summary()
+"""
+```
+
+---
+
+## 모델 학습
+
+```python
+#Training model, fit()
+#모델의 weights와 bias값을 경사하강법(GDA)를 이용해서 학습을 통해 결정
+# verbose -> (1 =자세하게), (2 = 간략하게)
+history = model.fit(X_train, y_train, epochs=30,batch_size = 32, verbose =2, validation_data = (X_valid, y_valid))
+```
+
+---
+
+## 시각화
+
+```python
+print("history params = ", history.params)
+print("history epoch = ", history.epoch)
+print("history keys = ", history.history.keys())
+
+import pandas as pd
+
+pd.DataFrame(history.history).plot(figsize = (8,5))
+plt.grid()
+plt.gca().set_ylim(0,1)
+plt.show()
+```
+
+<img src="./img/MLP.png" width="1000" height="500">
+
+---
+
+## 성능 평가
+
+```python
+#Model Evaluation
+
+model.evaluate(X_test,y_test)
+
+[output]
+313/313 [==============================] - 1s 2ms/step - loss: 0.3363 - accuracy: 0.8826
+[0.3363315761089325, 0.8826000094413757]
+
+```
 
 ---
 
